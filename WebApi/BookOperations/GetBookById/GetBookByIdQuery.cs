@@ -3,18 +3,21 @@ using System.Linq;
 using WebApi.DBOperations;
 using WebApi.Common;
 using System;
+using AutoMapper;
 
-namespace WebApi.BookOperations.GetBooks
+namespace WebApi.BookOperations.GetBookById
 {
 
   public class GetBookByIdQuery
   {
     private readonly BookStoreDbContext _dbContext;
+    private readonly IMapper _mapper;
     public int BookId { get; set; }
 
-    public GetBookByIdQuery(BookStoreDbContext dbContext)
+    public GetBookByIdQuery(BookStoreDbContext dbContext, IMapper mapper)
     {
       _dbContext = dbContext;
+      _mapper = mapper;
     }
 
     public BookByIdViewModel Handle()
@@ -23,11 +26,11 @@ namespace WebApi.BookOperations.GetBooks
       if(book is null){
         throw new InvalidOperationException("Book is not in DB");
       }
-      BookByIdViewModel vm = new BookByIdViewModel();
-      vm.Title = book.Title;
-      vm.PageCount = book.PageCount;
-      vm.PublishDate = book.PublishDate.Date.ToString("dd/MM/yyyy");
-      vm.Genre =  ((GenreEnum)book.GenreId).ToString();
+      BookByIdViewModel vm = _mapper.Map<BookByIdViewModel>(book);  //new BookByIdViewModel();
+      // vm.Title = book.Title;
+      // vm.PageCount = book.PageCount;
+      // vm.PublishDate = book.PublishDate.Date.ToString("dd/MM/yyyy");
+      // vm.Genre =  ((GenreEnum)book.GenreId).ToString();
       return vm;
     }
   }
