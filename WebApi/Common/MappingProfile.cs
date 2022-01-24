@@ -1,10 +1,14 @@
 
 
 using AutoMapper;
-using WebApi.BookOperations.GetBookById;
-using WebApi.BookOperations.GetBooks;
-using static WebApi.BookOperations.CreateBook.CreateBookCommand;
-using static WebApi.BookOperations.GetBooks.GetBooksQuery;
+using WebApi.Application.BookOperations.Queries.GetBookById;
+using WebApi.Application.BookOperations.Queries.GetBooks;
+using WebApi.Application.GenreOperations.Queries.GetGenreDetail;
+using WebApi.Application.GenreOperations.Queries.GetGenres;
+using WebApi.Entities;
+using static WebApi.Application.BookOperations.Commands.CreateBook.CreateBookCommand;
+
+using static WebApi.Application.BookOperations.Queries.GetBooks.GetBooksQuery;
 
 namespace WebApi.Common
 {
@@ -14,8 +18,10 @@ namespace WebApi.Common
     {
       CreateMap<CreateBookModel, Book>();
       // We want to modify Genre for all member
-      CreateMap<Book, BookByIdViewModel>().ForMember(destination => destination.Genre ,option => option.MapFrom(src => ((GenreEnum)src.GenreId).ToString()) );
-      CreateMap<Book, BooksViewModel>().ForMember(destination => destination.Genre ,option => option.MapFrom(src => ((GenreEnum)src.GenreId).ToString()) );
+      CreateMap<Book, BookByIdViewModel>().ForMember(destination => destination.Genre ,option => option.MapFrom(src => src.Genre.Name ));
+      CreateMap<Book, BooksViewModel>().ForMember(destination => destination.Genre ,option => option.MapFrom(src => src.Genre.Name ));
+      CreateMap<Genre, GenresViewModel>();
+      CreateMap<Genre, GenreDetailViewModel>();
     }
   }
 }

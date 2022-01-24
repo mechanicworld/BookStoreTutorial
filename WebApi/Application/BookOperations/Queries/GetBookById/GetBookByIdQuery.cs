@@ -4,8 +4,9 @@ using WebApi.DBOperations;
 using WebApi.Common;
 using System;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 
-namespace WebApi.BookOperations.GetBookById
+namespace WebApi.Application.BookOperations.Queries.GetBookById
 {
 
   public class GetBookByIdQuery
@@ -22,7 +23,7 @@ namespace WebApi.BookOperations.GetBookById
 
     public BookByIdViewModel Handle()
     {
-      var book = _dbContext.Books.Where(s => s.Id == BookId).SingleOrDefault();
+      var book = _dbContext.Books.Include( x=> x.Genre).Where(s => s.Id == BookId).SingleOrDefault();
       if(book is null){
         throw new InvalidOperationException("Book is not in DB");
       }
