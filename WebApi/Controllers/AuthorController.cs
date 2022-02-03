@@ -1,7 +1,9 @@
 
 
 using AutoMapper;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.Application.AuthorOperations.Commands.CreateAuthor;
 using WebApi.DBOperations;
 
 namespace WebApi.Controllers
@@ -23,7 +25,7 @@ namespace WebApi.Controllers
 
 
     [HttpGet]
-    public ActionResult GetGenres()
+    public ActionResult GetAuthor()
     {
       GetGenresQuery query = new GetGenresQuery(_context,_mapper);
       var obj = query.Handle();
@@ -43,12 +45,12 @@ namespace WebApi.Controllers
     }
 
     [HttpPost]
-    public IActionResult AddGenre([FromBody] CreateGenreModel newGenre)
+    public IActionResult AddGenre([FromBody] CreateAuthorModel newAuthor)
     {
-      CreateGenreCommand command = new CreateGenreCommand(_context);
-      command.Model = newGenre;
+      CreateAuthorCommand command = new CreateAuthorCommand(_context);
+      command.Model = newAuthor;
 
-      CreateGenreCommandValidator validator = new CreateGenreCommandValidator();
+      CreateAuthorCommandValidator validator = new CreateAuthorCommandValidator();
       validator.ValidateAndThrow(command);
 
       command.Handle();
