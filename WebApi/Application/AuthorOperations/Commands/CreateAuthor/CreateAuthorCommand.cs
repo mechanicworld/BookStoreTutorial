@@ -22,6 +22,8 @@ namespace WebApi.Application.AuthorOperations.Commands.CreateAuthor
 
         author = new Author();
         author.Name = Model.Name;
+        author.Surname = Model.Surname;
+        author.Birthday = Model.Birthday;
         _context.Authors.Add(author);
         _context.SaveChanges();
     }

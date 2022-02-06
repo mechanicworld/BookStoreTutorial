@@ -4,6 +4,9 @@ using AutoMapper;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Application.AuthorOperations.Commands.CreateAuthor;
+using WebApi.Application.AuthorOperations.Commands.DeleteAuthor;
+using WebApi.Application.AuthorOperations.Commands.UpdateAuthor;
+using WebApi.Application.AuthorOperations.Queries.GetAuthors;
 using WebApi.DBOperations;
 
 namespace WebApi.Controllers
@@ -27,17 +30,17 @@ namespace WebApi.Controllers
     [HttpGet]
     public ActionResult GetAuthor()
     {
-      GetGenresQuery query = new GetGenresQuery(_context,_mapper);
+      GetAuthorsQuery query = new GetAuthorsQuery(_context,_mapper);
       var obj = query.Handle();
       return Ok(obj);
     }
 
     [HttpGet("id")]
-    public ActionResult GetGenreDetail(int id)
+    public ActionResult GetAuthorDetail(int id)
     {
-      GetGenreDetailQuery query = new GetGenreDetailQuery(_context,_mapper);
-      query.GenreId = id;
-      GetGenreDetailQueryValidator validator = new GetGenreDetailQueryValidator();
+      GetAuthorDetailQuery query = new GetAuthorDetailQuery(_context,_mapper);
+      query.AuthorId = id;
+      GetAuthorDetailQueryValidator validator = new GetAuthorDetailQueryValidator();
       validator.ValidateAndThrow(query);
 
       var obj = query.Handle();
@@ -45,7 +48,7 @@ namespace WebApi.Controllers
     }
 
     [HttpPost]
-    public IActionResult AddGenre([FromBody] CreateAuthorModel newAuthor)
+    public IActionResult AddAuthor([FromBody] CreateAuthorModel newAuthor)
     {
       CreateAuthorCommand command = new CreateAuthorCommand(_context);
       command.Model = newAuthor;
@@ -58,13 +61,13 @@ namespace WebApi.Controllers
     }
 
     [HttpPut("id")]
-    public IActionResult UpdateGenre(int id, [FromBody] UpdateGenreModel updateGenre)
+    public IActionResult UpdateAuthor(int id, [FromBody] UpdateAuthorModel updateAuthor)
     {
-      UpdateGenreCommand command = new UpdateGenreCommand(_context);
-      command.GenreId = id;
-      command.Model = updateGenre;
+      UpdateAuthorCommand command = new UpdateAuthorCommand(_context);
+      command.AuthorId = id;
+      command.Model = updateAuthor;
 
-      UpdateGenreCommandValidator validator = new UpdateGenreCommandValidator();
+      UpdateAuthorCommandValidator validator = new UpdateAuthorCommandValidator();
       validator.ValidateAndThrow(command);
 
       command.Handle();
@@ -72,12 +75,12 @@ namespace WebApi.Controllers
     }
 
     [HttpDelete("id")]
-    public IActionResult DeleteGenre(int id)
+    public IActionResult DeleteAuthor(int id)
     {
-      DeleteGenreCommand command = new DeleteGenreCommand(_context);
-      command.GenreId = id;
+      DeleteAuthorCommand command = new DeleteAuthorCommand(_context);
+      command.AuthorId = id;
 
-      DeleteGenreCommandValidator validator = new DeleteGenreCommandValidator();
+      DeleteAuthorCommandValidator validator = new DeleteAuthorCommandValidator();
       validator.ValidateAndThrow(command);
 
       command.Handle();
